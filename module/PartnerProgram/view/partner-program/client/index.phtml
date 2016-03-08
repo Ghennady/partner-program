@@ -1,0 +1,43 @@
+<?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var \Zend\Form\Form $form
+ * @var \PartnerProgram\Entity\Client[] $clients
+ */
+?>
+<h2>Register new Client</h2>
+<?php echo $this->form($form);
+?>
+<h2>Clients</h2>
+<table border="1" width="100%">
+    <tr>
+        <th width="28%">Name</th>
+        <th width="28%">Balance</th>
+        <th width="11%">Own partner id</th>
+        <th width="11%">Parent partner id</th>
+        <th width="11%">Parent client name</th>
+        <th width="11%">Balance history</th>
+    </tr>
+<?php foreach ($clients as $client):?>
+    <?php
+    /** @var \PartnerProgram\Entity\Partner $partnerProgram */
+    $partnerProgram = $this->partnerProgram($client);
+    ?>
+    <tr>
+        <td><?php echo $client->getName()?></td>
+        <td><?php echo $client->getBalance()?></td>
+        <?php if($partnerProgram) :?>
+            <td><?php echo $partnerProgram->getId()?></td>
+            <?php if ($partnerProgram->hasPartnerProgram()):?>
+                <td><?php echo $partnerProgram->getParentPartner()->getId()?></td>
+                <td><?php echo $partnerProgram->getParentPartner()->getClient()->getName()?></td>
+            <?php else: ?>
+                <td colspan="2" align="center">-</td>
+            <?php endif; ?>
+        <?php else:?>
+            <td colspan="3" align="center">-</td>
+        <?php endif;?>
+        <td><a href="<?php echo $this->url('balance', ['clientId' => $client->getId()])?>">Balance history</a></td>
+    </tr>
+<?php endforeach;?>
+</table>

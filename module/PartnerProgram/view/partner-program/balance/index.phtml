@@ -1,0 +1,34 @@
+<?php
+/**
+ * @var \Zend\Form\Form $form
+ * @var \PartnerProgram\Entity\Client $client
+ * @var \PartnerProgram\Entity\Balance\Operation[] $operations
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ */
+?>
+
+<h2>Create Balance Opeartion</h2>
+<?php echo $this->form($form); ?>
+
+<h2>Balance history for client: <?php echo $client->getName()?></h2>
+
+<table border="1" width="100%">
+    <tr>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Description</th>
+    </tr>
+<?php foreach ($operations as $operation): ?>
+    <tr>
+        <td><?php echo $operation->getReason()->getValue()?></td>
+        <td><?php echo $operation->getAmount()?></td>
+        <td><?php echo $operation->getDate()->format('d.m.Y H:i:s')?></td>
+        <td><?php echo $operation->getDescription()?></td>
+    </tr>
+<?php endforeach;;?>
+</table>
+
+<p>
+    Total balance: <?php echo $client->getBalance()?>
+</p>
